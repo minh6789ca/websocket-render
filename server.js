@@ -1,31 +1,20 @@
-// JavaScript Documentconst fs = require('fs');
-const https = require('https');
 const WebSocket = require('ws');
-const express = require('express');
 
-const app = express();
+// Lấy PORT từ biến môi trường (Render cấp tự động)
+const PORT = process.env.PORT || 443;  
 
-// Tạo HTTPS Server
-const server = https.createServer({
-    cert: fs.readFileSync('./cert.pem'),   // Chứng chỉ SSL
-    key: fs.readFileSync('./key.pem')
-}, app);
-
-const wss = new WebSocket.Server({ server });
+// Tạo WebSocket Server
+const wss = new WebSocket.Server({ port: PORT });
 
 wss.on('connection', (ws) => {
     console.log('🔗 Client đã kết nối');
 
     ws.on('message', (message) => {
-        console.log(`📩 Tin nhắn nhận được: ${message}`);
+        console.log(`📩 Nhận tin nhắn: ${message}`);
         ws.send(`📨 Server phản hồi: ${message}`);
     });
 
     ws.on('close', () => console.log('❌ Client đã ngắt kết nối'));
 });
 
-// Lắng nghe cổng do Render cấp (PORT)
-const PORT = process.env.PORT || 443;
-server.listen(PORT, () => {
-    console.log(`🚀 WSS Server chạy trên cổng ${PORT}`);
-});
+console.log(`🚀 WebSocket Server đang chạy trên cổng ${PORT}`);
