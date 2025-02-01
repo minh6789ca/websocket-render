@@ -1,7 +1,7 @@
 const WebSocket = require('ws');
 
 // Lấy PORT từ biến môi trường (Render cấp tự động)
-const PORT = process.env.PORT || 443;  
+const PORT = process.env.PORT || 27782;  
 
 // Tạo WebSocket Server
 const wss = new WebSocket.Server({ port: PORT });
